@@ -4,9 +4,12 @@ function App() {
 
   //TODO Implement Routing over different Sites
   return (
-    <div className="App">
-
-    </div>
+      <Router>
+        <Routes>
+          <Route path="/" element={<App />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </Router>
   );
 }
 
