@@ -5,13 +5,14 @@ import {NavLink} from "react-router-dom";
 import Button from "@mui/material/Button";
 import * as React from "react";
 
-export default function Registration() {
+export default function Registration(props) {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [errorMessage, setErrorMessage] = useState("")
     const [firstPw, setFirstPw] = useState('')
 
     function storeUser() {
+        props.setUser(username)
         firebase.database().ref('users/' + username + '/security/password').set(password)
     }
 

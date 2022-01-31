@@ -5,7 +5,7 @@ import * as React from "react";
 import {useEffect, useState} from "react";
 import firebase from "firebase/compat";
 
-export default function Login() {
+export default function Login(props) {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [pwFromDatabase, setPwFromDatabase] = useState('')
@@ -19,9 +19,9 @@ export default function Login() {
     useEffect(() => {
         if (password !== '' || pwFromDatabase !== '') {
             if (password === pwFromDatabase) {
-                console.log("login successful")
                 setErrorMessage("")
                 navigate("/business")
+                props.setUser(username)
             } else {
                 setErrorMessage("Incorrect password")
 
