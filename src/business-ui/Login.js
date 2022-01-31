@@ -1,6 +1,6 @@
-import {TextField} from "@mui/material";
+import {Container, TextField} from "@mui/material";
 import Button from "@mui/material/Button";
-import { useNavigate } from 'react-router-dom';
+import {NavLink, useNavigate} from 'react-router-dom';
 import * as React from "react";
 import {useEffect, useState} from "react";
 import firebase from "firebase/compat";
@@ -20,7 +20,7 @@ export default function Login(props) {
         if (password !== '' || pwFromDatabase !== '') {
             if (password === pwFromDatabase) {
                 setErrorMessage("")
-                navigate("/business")
+                navigate("/newMeetings")
                 props.setUser(username)
             } else {
                 setErrorMessage("Incorrect password")
@@ -29,21 +29,23 @@ export default function Login(props) {
         }
     }, [pwFromDatabase])
 
+    useEffect(() => {
+        props.setRows([])
+    }, [])
+
     function findPassword() {
         // on() method
         firebase.database().ref('users/' + username + '/security').on('value', (snap) => {
             if (snap.val()) {
-                console.log("snap.val()", snap.val())
                 setPwFromDatabase(snap.val().password)
             } else {
                 setErrorMessage("Incorrect Username")
-
             }
         });
     }
 
     return (
-        <div>
+        <Container>
             <TextField
                 sx={{width: '600px'}}
                 value={username}
@@ -57,8 +59,10 @@ export default function Login(props) {
                 placeholder={"Password"}
                 onChange={e => setPassword(e.target.value)}
             />
+            <br/>
                 <Button variant={"contained"} onClick={() => onLogin()}>Login</Button>
-        </div>
+            <div>Du hast noch keinen Account? Registrier dich <NavLink to={'/registration'}>hier</NavLink></div>
+        </Container>
     );
 
 }

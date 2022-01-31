@@ -4,13 +4,8 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import Switch from '@mui/material/Switch';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormGroup from '@mui/material/FormGroup';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
-import {Button} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 
 export default function MenuAppBar(props) {
@@ -22,6 +17,8 @@ export default function MenuAppBar(props) {
     };
     const handleClose = () => {
         setAnchorEl(null);
+        props.setAuthenticated(false)
+        navigate('/login')
     };
     return (
         <Box sx={{flexGrow: 1}}>
@@ -30,12 +27,13 @@ export default function MenuAppBar(props) {
                     <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
                         Business UI
                     </Typography>
-                    <MenuItem onClick={() => navigate('/business')}>
+                    {props.authenticated ? (<><MenuItem onClick={() => navigate('/business')}>
                         <Typography textAlign="center">Meeting Liste</Typography>
                     </MenuItem>
-                    <MenuItem onClick={() => navigate('/newMeetings')}>
-                        <Typography textAlign="center">Neues Meeting</Typography>
-                    </MenuItem>
+                        <MenuItem onClick={() => navigate('/newMeetings')}>
+                            <Typography textAlign="center">Neues Meeting</Typography>
+                        </MenuItem></>) : undefined}
+
                     {props.authenticated ? (
                         <div>
                             <IconButton
@@ -46,7 +44,7 @@ export default function MenuAppBar(props) {
                                 onClick={handleMenu}
                                 color="inherit"
                             >
-                                <AccountCircle/>
+                                {props.user}
                             </IconButton>
                             <Menu
                                 id="menu-appbar"
@@ -63,16 +61,10 @@ export default function MenuAppBar(props) {
                                 open={Boolean(anchorEl)}
                                 onClose={handleClose}
                             >
-                                {props.user}
                                 <MenuItem onClick={handleClose}>Abmelden</MenuItem>
                             </Menu>
                         </div>
-                    ) : <Button
-                        href={"/login"}
-                        sx={{my: 2, color: 'white', display: 'block'}}
-                    >
-                        Anmelden
-                    </Button>}
+                    ) : undefined}
                 </Toolbar>
             </AppBar>
         </Box>

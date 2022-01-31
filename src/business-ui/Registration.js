@@ -1,11 +1,12 @@
-import {useState} from "react";
-import firebase from "firebase/compat";
-import {TextField} from "@mui/material";
-import {NavLink} from "react-router-dom";
-import Button from "@mui/material/Button";
 import * as React from "react";
+import {useEffect, useState} from "react";
+import firebase from "firebase/compat";
+import {Container, TextField} from "@mui/material";
+import {NavLink, useNavigate} from "react-router-dom";
+import Button from "@mui/material/Button";
 
 export default function Registration(props) {
+    const navigate = useNavigate();
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [errorMessage, setErrorMessage] = useState("")
@@ -17,12 +18,12 @@ export default function Registration(props) {
     }
 
     async function getUsername() {
-          const snap = await firebase.database().ref('users/' + username).get();
-          if (snap.val()) {
-              console.log(snap.val())
-              return true;
-          }
-          return false
+        const snap = await firebase.database().ref('users/' + username).get();
+        if (snap.val()) {
+            console.log(snap.val())
+            return true;
+        }
+        return false
     }
 
     async function validate() {
@@ -31,8 +32,12 @@ export default function Registration(props) {
         if (!isUserAlreadyUsed) {
             if (firstPw === password) {
                 if (username.length > 1) {
-                    storeUser()
-                    console.log(username)
+                    if (firstPw !== '' && password !== '') {
+                        storeUser()
+                        navigate('/login')
+                    }else{
+                        setErrorMessage("Password too short")
+                    }
                 } else {
                     setErrorMessage("Username too short")
                 }
@@ -44,9 +49,12 @@ export default function Registration(props) {
         }
     }
 
+    useEffect(() => {
+        props.setRows([])
+    }, [])
 
     return (
-        <div>
+        <Container>
             <TextField
                 error={errorMessage !== ''}
                 sx={{width: '600px'}}
@@ -69,9 +77,9 @@ export default function Registration(props) {
                 placeholder={"Confirm Password"}
                 onChange={e => setPassword(e.target.value)}
             />
-            <NavLink to={"/login"}>
-                <Button variant={"contained"} onClick={() => validate()}>Registrieren</Button>
-            </NavLink>
-        </div>
+            <br/>
+            <Button variant={"contained"} onClick={() => validate()}>Registrieren</Button>
+            <div>Du hast bereits einen Account? Melde dich <NavLink to={'/login'}>hier</NavLink> an</div>
+        </Container>
     );
 }

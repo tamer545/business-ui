@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import SearchBar from './business-ui/SearchBar'
 import Login from "./business-ui/Login";
@@ -17,13 +16,13 @@ function App() {
     return (
         <>
             <BrowserRouter>
-                <SearchBar authenticated={authenticated} user={user}/>
+                <SearchBar authenticated={authenticated} setAuthenticated={setAuthenticated} user={user}/>
                 <Routes>
-                    <Route path={'/login'} element={<Login user={user} setUser={setUser}/>}/>
-                    <Route path={'/registration'} element={<Registration user={user} setUser={setUser}/>}/>
+                    <Route path={'/login'} element={<Login user={user} setUser={setUser} rows={rows} setRows={setRows}/>}/>
+                    <Route path={'/registration'} element={<Registration user={user} setUser={setUser} rows={rows} setRows={setRows}/>}/>
                     <Route path={'/business'} element={<MeetingList user={user} setUser={setUser} rows={rows} setRows={setRows} setAuthenticated={setAuthenticated}/>}/>
                     <Route path={'/newMeetings'} element={<NewMeeting user={user} setUser={setUser} rows={rows} setRows={setRows} setAuthenticated={setAuthenticated}/>}/>
-                    <Route path={'/'} element={<Login user={user} setUser={setUser}/>}/>
+                    <Route path={'/'} element={<Login user={user} setUser={setUser} rows={rows} setRows={setRows}/>}/>
                 </Routes>
             </BrowserRouter>
         </>

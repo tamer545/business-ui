@@ -1,6 +1,5 @@
 import '../App.css';
 import {
-    Button,
     Container,
     LinearProgress,
     Paper,
@@ -13,10 +12,8 @@ import {
     TableRow
 } from "@mui/material";
 import {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
 
 function AuiList(props) {
-    const navigate = useNavigate();
     const columns = [
         {id: 'name', label: 'Name', minWidth: 170},
         {id: 'dateAdded', label: 'Date Added', minWidth: 100},
